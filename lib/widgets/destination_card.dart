@@ -38,46 +38,79 @@ class DestinationCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // ✅ Top image part
+              // 🔥 IMAGE SECTION
               Expanded(
                 child: Stack(
                   children: [
-                    Positioned.fill(
+                    // IMAGE
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(18),
                       child: Image.asset(
                         destination.image,
+                        width: double.infinity,
                         fit: BoxFit.cover,
                       ),
                     ),
 
-                    // subtle overlay
-                    Positioned.fill(
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Colors.black.withOpacity(0.05),
-                              Colors.black.withOpacity(0.35),
-                            ],
-                          ),
+                    // GRADIENT OVERLAY
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(18),
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Colors.transparent,
+                            Colors.black.withOpacity(0.6),
+                          ],
                         ),
                       ),
                     ),
 
-                    // Favorite button
+                    // FAVORITE ICON
                     Positioned(
-                      top: 12,
-                      right: 12,
-                      child: GestureDetector(
-                        onTap: onFavoriteToggle,
-                        child: CircleAvatar(
-                          radius: 18,
-                          backgroundColor: Colors.white.withOpacity(0.9),
-                          child: Icon(
-                            isFavorite ? Icons.favorite : Icons.favorite_border,
-                            color: isFavorite ? Colors.red : Colors.black87,
-                            size: 20,
+                      top: 10,
+                      right: 10,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              blurRadius: 6,
+                              color: Colors.black.withOpacity(0.2),
+                            ),
+                          ],
+                        ),
+                        child: IconButton(
+                          icon: Icon(
+                            isFavorite
+                                ? Icons.favorite
+                                : Icons.favorite_border,
+                            color: Colors.red,
+                          ),
+                          onPressed: onFavoriteToggle,
+                        ),
+                      ),
+                    ),
+
+                    // CATEGORY TAG (ONLY ONE — kept here)
+                    Positioned(
+                      bottom: 10,
+                      left: 10,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 5),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.9),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          destination.category.toUpperCase(),
+                          style: const TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF1B5E20),
                           ),
                         ),
                       ),
@@ -86,37 +119,14 @@ class DestinationCard extends StatelessWidget {
                 ),
               ),
 
-              // ✅ Bottom white info part (like image 3)
+              // 🔥 CLEAN INFO SECTION
               Container(
                 padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
                 color: Colors.white,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Category pill
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 5,
-                      ),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF1B5E20).withOpacity(0.12),
-                        borderRadius: BorderRadius.circular(999),
-                      ),
-                      child: Text(
-                        destination.category.toUpperCase(),
-                        style: const TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w800,
-                          color: Color(0xFF1B5E20),
-                          letterSpacing: 0.8,
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(height: 10),
-
-                    // Title
+                    // TITLE
                     Text(
                       destination.title,
                       maxLines: 1,
@@ -124,13 +134,13 @@ class DestinationCard extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w900,
-                        color: Color(0xFF0F3D1E), // deep green
+                        color: Color(0xFF0F3D1E),
                       ),
                     ),
 
                     const SizedBox(height: 6),
 
-                    // Location
+                    // LOCATION
                     Row(
                       children: [
                         const Icon(
@@ -153,40 +163,27 @@ class DestinationCard extends StatelessWidget {
                       ],
                     ),
 
-                    const SizedBox(height: 10),
-
-                    // One sentence description (needs destination.description)
-                    Text(
-                      destination.description,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: Colors.black54,
-                        height: 1.4,
-                        fontSize: 13,
-                      ),
-                    ),
-
                     const SizedBox(height: 12),
 
-Row(
-  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  children: [
-    RatingStars(rating: destination.rating),
+                    // RATING + PRICE
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        RatingStars(rating: destination.rating),
 
-    Flexible(
-      child: Text(
-        "\$${destination.price.toStringAsFixed(0)} / person",
-        overflow: TextOverflow.ellipsis,
-        style: const TextStyle(
-          color: Color(0xFF1B5E20),
-          fontWeight: FontWeight.w900,
-          fontSize: 14,
-        ),
-      ),
-    ),
-  ],
-),
+                        Flexible(
+                          child: Text(
+                            "\$${destination.price.toStringAsFixed(0)} / person",
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              color: Color(0xFF1B5E20),
+                              fontWeight: FontWeight.w900,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
